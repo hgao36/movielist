@@ -1,0 +1,21 @@
+Inside movieList
+
+constructor(props){
+
+    super(props);
+    this.state = store.getState();
+    console.log(this.state)
+}
+
+
+this.state.***(like movie id)
+
+
+
+
+
+handleInputChange(e) {
+    const action = {
+        type: ''
+    }
+}
