@@ -1,5 +1,5 @@
 import React from "react";
-import "./Movie.css";
+import "./MovieCard.css";
 
 const imgPrefix = "https://image.tmdb.org/t/p/w500/";
 
