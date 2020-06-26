@@ -1,0 +1,12 @@
+.moviecard {
+    width: 25%;
+    height: auto;
+    margin: 10px;
+    /* border: solid; */
+    text-align: center;
+}
+
+.poster {
+    width: 90%;
+    height: auto;
+}
