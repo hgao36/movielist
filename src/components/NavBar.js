@@ -17,7 +17,7 @@ import MovieList from "./MovieList";
 import LikedList from "./LikedList";
 import BlockedList from "./BlockedList";
 import Error from "./Error";
-import Layout from "./Layout";
+import Layout from "../Layout";
 
 class NavBar extends Component {
   render() {
