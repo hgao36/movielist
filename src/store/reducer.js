@@ -13,14 +13,17 @@ const initialState = {
     page_number: 1
   };
 
+
+
 export default (state = initialState, action) =>{
     switch (action.type) {
         //all the logic will be executed in the Actions.js in /action folder, it will return the right action.movie_list when corresponding 
         //action type is called.
         case GET_MOVIE_LIST_ALL:
+            const newState = state
+            newState.movie_list = action.data;
             return{
-                ...state,
-                movie_list: action.payload
+                newState
             }
         case MOVIE_LIST_LIKED_ADD:
             return{
