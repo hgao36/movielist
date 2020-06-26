@@ -1,16 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import MovieList from './MovieList';
+import React from "react";
+import ReactDOM from "react-dom";
+import MovieList from "./MovieList";
+import NavBar from "./NavBar";
 
-ReactDOM.render(
-    <MovieList />,
-  document.getElementById('root')
-);
-
-
-
-
-
-
-
-
+ReactDOM.render(<NavBar />, document.getElementById("root"));
