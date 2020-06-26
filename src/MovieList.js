@@ -1,13 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
-
-class MovieList extends Component{
-
-  render(){
-    return <div>MovieList !APP!</div>
+class MovieList extends Component {
+  render() {
+    return <div>MovieList!</div>;
   }
-
 }
 
-
-export default MovieList
+export default MovieList;
