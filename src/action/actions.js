@@ -25,11 +25,10 @@ export const moviesFetchAction = () => (dispatch, getState) => {
             let total_movies = data.data.results
             //todo
             //logic here to filter out the blocked/liked list
-
+            
             dispatch({
                 type: GET_MOVIE_LIST,
                 movie_list: total_movies
-
             })
         })
         

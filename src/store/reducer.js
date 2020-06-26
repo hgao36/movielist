@@ -12,7 +12,7 @@ MOVIE_LIST_BLOCKED_DELETE,
 
 
 const initialState = {
-    movies_total: [],
+    movie_list: [],
     movies_current: {},
     movies_liked: [],
     movies_blocked: [],
@@ -25,6 +25,6 @@ const initialState = {
     total_pages: 500,
   };
 
-export default (state = defaultState, action) =>{
+export default (state = initialState, action) =>{
     return state;
 }
