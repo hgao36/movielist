@@ -1,30 +1,45 @@
 import{
 GET_MOVIE_LIST_ALL,
-GET_MOVIE_LIST_LIKED,
-GET_MOVIE_LIST_BLOCKED,
-MOVIE_LIST_SORT,
 MOVIE_LIST_CHANGE_PAGE,
 MOVIE_LIST_LIKED_ADD,
-MOVIE_LIST_LIKED_DELETE,
 MOVIE_LIST_BLOCKED_ADD,
-MOVIE_LIST_BLOCKED_DELETE,
 } from '../action/types'
 
 
 const initialState = {
     movie_list: [],
-    movies_current: {},
     movies_liked: [],
     movies_blocked: [],
-    loading: false,
-    button_like: "Like",
-    button_sort: "original_title.desc",
-    order_ascending: true,
-    order_descending: true,
-    page_number: 1,
-    total_pages: 500,
+    page_number: 1
   };
 
 export default (state = initialState, action) =>{
-    return state;
+    switch (action.type) {
+        //all the logic will be executed in the Actions.js in /action folder, it will return the right action.movie_list when corresponding 
+        //action type is called.
+        case GET_MOVIE_LIST_ALL:
+            return{
+                ...state,
+                movie_list: action.payload
+            }
+        case MOVIE_LIST_LIKED_ADD:
+            return{
+                ...state,
+                movies_liked: action.payload
+            }
+        case MOVIE_LIST_BLOCKED_ADD:
+            return{
+                ...state,
+                movies_blocked: action.payload
+            }
+        case MOVIE_LIST_CHANGE_PAGE:
+            return{
+                //test
+                ...state,
+                movie_list:action.payload
+            }
+        break;
+        default:
+            return state;
+    }
 }
