@@ -30,7 +30,7 @@ class NavBar extends Component {
           <Switch>
             {/* switch matches the very first route and skip the rest  */}
             <Route
-              path="/"
+              path="/"  
               exact
               render={() => {
                 return <h1>This is the Home Page</h1>;
@@ -44,6 +44,7 @@ class NavBar extends Component {
         </Layout>
         {/* </div> */}
       </Router>
+
     );
   }
 }
