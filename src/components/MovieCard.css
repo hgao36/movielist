@@ -1,12 +1,30 @@
 .moviecard {
-    width: 25%;
-    height: auto;
-    margin: 10px;
-    /* border: solid; */
-    text-align: center;
+  border-radius: 15px;
+  /* background-color: Gainsboro; */
+  /* background-color: snow; */
+  background-color: WhiteSmoke;
+  padding: 15px;
+  width: 100%;
+  height: auto;
+  margin: 10px;
+  float: left;
+  text-align: center;
+  border: 1px;
 }
 
+.moviecard:hover {
+  transition: transform 0.5s;
+  transform: translateY(-10px);
+  border-style: solid;
+  border-color: OldLace;
+  border-width: 5px;
+}
 .poster {
-    width: 90%;
-    height: auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 70%;
+  height: auto;
+}
+.overview {
+  text-align: left;
 }

@@ -12,7 +12,7 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import { Menu } from "@material-ui/icons";
+import { Menu, GpsFixed, CenterFocusStrong } from "@material-ui/icons";
 import { compose } from "recompose";
 import Navigation from "./Navigation";
 
@@ -28,6 +28,7 @@ const styles = (theme) => ({
     width: "100%",
   },
   appBar: {
+    position: "fixed",
     zIndex: theme.zIndex.drawer + 1,
   },
   navIconHide: {
@@ -39,16 +40,20 @@ const styles = (theme) => ({
   drawerPaper: {
     width: drawerWidth,
     [theme.breakpoints.up("md")]: {
-      position: "relative",
+      position: "fixed",
     },
   },
   content: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing(3),
-  },
-  nested: {
-    paddingLeft: theme.spacing(4),
+    float: "center",
+    textAlign: "center",
+    [theme.breakpoints.up("md")]: {
+      backgroundColor: "GhostWhite",
+      textAlign: "center",
+      position: "relative",
+    },
   },
 });
 
@@ -75,20 +80,6 @@ class Layout extends Component {
           <div className={classes.toolbar} />
         </Hidden>
         <Navigation />
-        {/* <MenuList>
-          <MenuItem component={Link} to="/" selected={"/" === pathname}>
-            Home
-          </MenuItem>
-          <MenuItem component={Link} to="/" selected={"/" === pathname}>
-            Home
-          </MenuItem>
-          <MenuItem component={Link} to="/" selected={"/" === pathname}>
-            Home
-          </MenuItem>
-          <MenuItem component={Link} to="/" selected={"/" === pathname}>
-            Home
-          </MenuItem>
-        </MenuList> */}
       </div>
     );
 

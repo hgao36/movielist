@@ -1,10 +1,3 @@
-// NAV BAR -- control content  //router?    {2pts}
-
-// Home page →  This is the home page
-// Movie list →
-// Liked list →  trash, block, more options
-// Blocked list →  same code
-
 import React, { Component } from "react";
 import {
   BrowserRouter as Router,
