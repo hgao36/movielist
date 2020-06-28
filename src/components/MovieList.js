@@ -1,5 +1,6 @@
 import React, { Component, useState } from "react";
-import MovieCard from './MovieCard';
+import MovieCard from "./MovieCard";
+import "./MovieList.css";
 
 const mov = [
   {
@@ -384,7 +385,7 @@ function MovieList() {
       return b.vote_count - a.vote_count;
     });
     setFilm(temp);
-  }
+  };
 
   const sortbyavg = () => {
     const temp = [...film];
@@ -392,18 +393,29 @@ function MovieList() {
       return b.vote_average - a.vote_average;
     });
     setFilm(temp);
-  }
+  };
   return (
-    <>
+    <div class="main-movieList">
       <div>
-        <button>previous page</button>
-        <button>next page</button>
+        <button class="previousPage">Previous</button>
+        <form>
+          <label>Page &nbsp;</label>
+          <input
+            type="number"
+            id="quantity"
+            name="quantity"
+            min="1"
+            max="500"
+            disabled
+          ></input>
+        </form>
+        <button class="nextPage">Next</button>
       </div>
       <button onClick={sortbyname}>SortByname</button>
       <button onClick={sortbycount}>Sort by vote count</button>
       <button onClick={sortbyavg}>Sort by vote average</button>
-      {card}
-    </>
+      <div class="grid-container">{card}</div>
+    </div>
   );
 }
 

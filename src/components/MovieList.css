@@ -1,0 +1,22 @@
+/* .grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  background-color: #2196f3;
+  padding: 10px;
+  padding-left: 150px;
+} */
+
+.grid-container {
+  display: grid;
+  padding-top: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  /* if you want to display 2 moives on phone: 10rem, display 1 movie: 19rem  */
+  /* fr: based on the remaining avaiable space, how flexible length you want to leave  */
+  grid-gap: 2rem;
+}
+
+@media screen and (min-width: 960px) {
+  .main-movieList {
+    padding-left: 220px;
+  }
+}

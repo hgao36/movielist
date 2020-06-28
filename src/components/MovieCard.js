@@ -7,14 +7,18 @@ const MovieCard = (props) => {
   const imgSrc = imgPrefix + props.poster_path;
   if (!props.liked && !props.blocked) {
     return (
-      <div className="moviecard">
+      <div className="moviecard grid-item">
         <img className="poster" src={imgSrc} alt="none" />
-        <div className="title">{props.title}</div>
-        <div className="release_date">release_date:{props.release_date}</div>
+        <div className="title">
+          <strong>{props.title}</strong>
+        </div>
+        <div className="release_date">
+          Release Date:&nbsp;{props.release_date}
+        </div>
         <span className="vote_average">
-          vote_average:{props.vote_average}____
+          Vote Average:&nbsp;{props.vote_average} &nbsp; &nbsp;
         </span>
-        <span className="vote_count">vote_count:{props.vote_count}</span>
+        <span className="vote_count">Vote Count:&nbsp;{props.vote_count}</span>
         <br />
         <button className="like" onClick={props.handleLike}>
           like
@@ -26,15 +30,19 @@ const MovieCard = (props) => {
       </div>
     );
   } else if (props.liked) {
-      return (
-        <div className="moviecard">
+    return (
+      <div className="moviecard grid-item">
         <img className="poster" src={imgSrc} alt="none" />
-        <div className="title">{props.title}</div>
-        <div className="release_date">release_date:{props.release_date}</div>
+        <div className="title">
+          <strong>{props.title}</strong>
+        </div>
+        <div className="release_date">
+          Release Date:&nbsp;{props.release_date}
+        </div>
         <span className="vote_average">
-          vote_average:{props.vote_average}____
+          Vote Average:&nbsp;{props.vote_average} &nbsp; &nbsp;
         </span>
-        <span className="vote_count">vote_count:{props.vote_count}</span>
+        <span className="vote_count">Vote Count:&nbsp;{props.vote_count}</span>
         <br />
         <button className="delete" onClick={props.handleDelete}>
           delete
@@ -44,17 +52,21 @@ const MovieCard = (props) => {
         </button>
         <div className="overview">{props.overview}</div>
       </div>
-      )
+    );
   } else if (props.blocked) {
-      return (
-        <div className="moviecard">
+    return (
+      <div className="moviecard grid-item">
         <img className="poster" src={imgSrc} alt="none" />
-        <div className="title">{props.title}</div>
-        <div className="release_date">release_date:{props.release_date}</div>
+        <div className="title">
+          <strong>{props.title}</strong>
+        </div>
+        <div className="release_date">
+          Release Date:&nbsp;{props.release_date}
+        </div>
         <span className="vote_average">
-          vote_average:{props.vote_average}____
+          Vote Average:&nbsp;{props.vote_average} &nbsp; &nbsp;
         </span>
-        <span className="vote_count">vote_count:{props.vote_count}</span>
+        <span className="vote_count">Vote Count:&nbsp;{props.vote_count}</span>
         <br />
         <button className="delete" onClick={props.handleDelete}>
           delete
@@ -64,7 +76,7 @@ const MovieCard = (props) => {
         </button>
         <div className="overview">{props.overview}</div>
       </div>
-      )
+    );
   }
 };
 
