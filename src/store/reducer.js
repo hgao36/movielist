@@ -7,10 +7,10 @@ MOVIE_LIST_BLOCKED_ADD,
 
 
 const initialState = {
-    movie_list: [],
-    movies_liked: [],
-    movies_blocked: [],
-    page_number: 1
+    movie_list: [1,2,3],
+    movies_liked: [4,5,6],
+    movies_blocked: [7,8,9],
+    page_number: 333
   };
 
 
@@ -22,26 +22,30 @@ export default (state = initialState, action) =>{
         case GET_MOVIE_LIST_ALL:
             const newState = state
             newState.movie_list = action.data;
-            return{
-                newState
-            }
+            console.log("out put from reducer")
+            console.log("new state")
+            console.log(newState)
+            return newState
+            
         case MOVIE_LIST_LIKED_ADD:
             return{
                 ...state,
                 movies_liked: action.payload
-            }
+            };
+            
         case MOVIE_LIST_BLOCKED_ADD:
             return{
                 ...state,
                 movies_blocked: action.payload
-            }
+            };
+            
         case MOVIE_LIST_CHANGE_PAGE:
             return{
                 //test
                 ...state,
                 movie_list:action.payload
-            }
-        break;
+            };
+            
         default:
             return state;
     }
