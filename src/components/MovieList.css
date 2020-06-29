@@ -20,3 +20,13 @@
     padding-left: 220px;
   }
 }
+
+.pagination {
+  padding: 10px;
+}
+
+button {
+  padding: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+}

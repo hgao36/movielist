@@ -11,6 +11,7 @@ import LikedList from "./LikedList";
 import BlockedList from "./BlockedList";
 import Error from "./Error";
 import Layout from "../Layout";
+import "./MovieList.css";
 
 class NavBar extends Component {
   render() {
@@ -23,7 +24,8 @@ class NavBar extends Component {
           <Switch>
             {/* switch matches the very first route and skip the rest  */}
             <Route
-              path="/"  
+              class="main-movieList"
+              path="/"
               exact
               render={() => {
                 return <h1>This is the Home Page</h1>;
@@ -37,7 +39,6 @@ class NavBar extends Component {
         </Layout>
         {/* </div> */}
       </Router>
-
     );
   }
 }
