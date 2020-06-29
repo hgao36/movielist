@@ -24,11 +24,10 @@ class NavBar extends Component {
           <Switch>
             {/* switch matches the very first route and skip the rest  */}
             <Route
-              class="main-movieList"
               path="/"
               exact
               render={() => {
-                return <h1>This is the Home Page</h1>;
+                return <h1 class="main-movieList">Welcome to the Home Page</h1>;
               }}
             />
             <Route path="/movieslist" exact strict component={MovieList} />
