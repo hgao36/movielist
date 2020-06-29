@@ -81,7 +81,9 @@ function MovieList(props) {
   useEffect(fetchdata, [1]);
 
   const turnNext = () => {
-    page_current += 1;
+    if (page_current >= 1) {
+      page_current += 1;
+    }
     if (page_current > props.page_number) {
       fetchdata();
     } else {
