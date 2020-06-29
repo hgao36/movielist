@@ -21,7 +21,7 @@ function MovieList(props) {
   if (!film) {
     card = "loading... ...";
   } else {
-    card = film.map((movie) => (
+    card = film.filter(mov => !mov.blocked).map((movie) => (
       <MovieCard
         key={movie.id}
         poster_path={movie.poster_path}
@@ -67,7 +67,9 @@ function MovieList(props) {
   };
 
   const fetchdata = () => {axios(URL+page_current).then(data =>{
-    const total_movies = data.data.results;
+    let temp = data.data.results;
+    temp = temp.map(mov => {return {...mov, blocked: false}});
+    const total_movies = temp;
     setFilm(total_movies);
     props.updateStore(total_movies);
     props.addPageNumber();
