@@ -1,34 +1,27 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState, useEffect } from "react";
 import MovieCard from './MovieCard';
 import {connect} from 'react-redux'
 import axios from 'axios'
 import {initListAction} from '../action/actions'
 import "./MovieList.css";
 
-const page_current = 1
+let page_current = 1;
 const API_KEY="adbe3118bf475a31215c5e428fb035ce"
 const URL = 
 "https://api.themoviedb.org/3/discover/movie?api_key=" 
 + 
 API_KEY 
-+ "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=" + 
-page_current;  
++ "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=";  
 
 
 
 function MovieList(props) {
-   console.log("store value, movie_list, liked, blocked and number")
-   console.log(props.movie_list)
-   console.log(props.movies_liked)
-   console.log(props.movies_blocked)
-   console.log(props.page_number)
-  
   const [film, setFilm] = useState();
   let card;
   if (!film) {
     card = "loading... ...";
   } else {
-    card = film.map((movie) => (
+    card = film.filter(mov => !mov.blocked).map((movie) => (
       <MovieCard
         key={movie.id}
         poster_path={movie.poster_path}
@@ -73,18 +66,44 @@ function MovieList(props) {
     setFilm(temp);
   };
 
-  const fetchdata = () => {axios(URL).then(data =>{
-    const total_movies = data.data.results;
+  const fetchdata = () => {axios(URL+page_current).then(data =>{
+    let temp = data.data.results;
+    temp = temp.map(mov => {return {...mov, liked: false, blocked: false}});
+    const total_movies = temp;
     setFilm(total_movies);
     props.updateStore(total_movies);
+    props.addPageNumber();
     })
   };
+
+  useEffect(fetchdata, [1]);
+
+  const turnNext = () => {
+    page_current += 1;
+    if (page_current > props.page_number) {
+      fetchdata();
+    } else {
+      setFilm(props.movie_list[page_current-1]);
+    }
+  }
+
+  const turnPrev = () => {
+    page_current -= 1;
+    if (page_current == 0) {
+      page_current = 1;
+    }
+    if (page_current > props.page_number) {
+      fetchdata();
+    } else {
+      setFilm(props.movie_list[page_current-1]);
+    }
+  }
 
   return (
     <div class="main-movieList">
       <div>
-        <button class="previousPage">Previous</button>
-        <form>
+        <button class="previousPage" onClick={turnPrev}>Previous</button>
+        {/* <form>
           <label>Page &nbsp;</label>
           <input
             type="number"
@@ -94,13 +113,12 @@ function MovieList(props) {
             max="500"
             disabled
           ></input>
-        </form>
-        <button class="nextPage">Next</button>
+        </form> */}
+        <button class="nextPage" onClick={turnNext}>Next</button>
       </div>
       <button onClick={sortbyname}>SortByname</button>
       <button onClick={sortbycount}>Sort by vote count</button>
       <button onClick={sortbyavg}>Sort by vote average</button>
-      <button onClick={fetchdata}>FetchMovieTest</button>
       <div class="grid-container">{card}</div>
     </div>
   );
@@ -118,27 +136,13 @@ const mapStateToProps = (state) =>{
 
 const mapDispatchToProps = (dispatch) =>{
   return{
-    updateStore(total_movies){
-    // const page_current = 1
-    // const API_KEY="adbe3118bf475a31215c5e428fb035ce"
-    // const URL = 
-    // "https://api.themoviedb.org/3/discover/movie?api_key=" 
-    // + 
-    // API_KEY 
-    // + "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=" + 
-    // page_current;  
-    // axios(URL).then(data =>{
-    //     let total_movies = data.data.results
-    //     const action = initListAction(total_movies)
-    //     dispatch(action)
-    //     console.log("action now")
-    //     console.log(action)
-    //     dispatch(action)
-    // })
+    updateStore: (total_movies) => {
     const action = initListAction(total_movies);
     dispatch(action);
-    console.log("action now");
-    // console.log(action);
+    },
+
+    addPageNumber: () => {
+      dispatch({type:"addPageNumber"});
     }
   }
 }
