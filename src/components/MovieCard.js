@@ -45,7 +45,7 @@ const MovieCard = (props) => {
         <span className="vote_count">Vote Count:&nbsp;{props.vote_count}</span>
         <br />
         <button className="delete" onClick={props.handleDelete}>
-          delete
+          unlike
         </button>
         <button className="block" onClick={props.handleBlock}>
           block

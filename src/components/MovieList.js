@@ -68,7 +68,7 @@ function MovieList(props) {
 
   const fetchdata = () => {axios(URL+page_current).then(data =>{
     let temp = data.data.results;
-    temp = temp.map(mov => {return {...mov, blocked: false}});
+    temp = temp.map(mov => {return {...mov, liked: false, blocked: false}});
     const total_movies = temp;
     setFilm(total_movies);
     props.updateStore(total_movies);
@@ -85,7 +85,6 @@ function MovieList(props) {
     } else {
       setFilm(props.movie_list[page_current-1]);
     }
-    console.log(props.movie_list);
   }
 
   const turnPrev = () => {
