@@ -1,38 +1,96 @@
 import React, { Component, useState, useEffect } from "react";
-import MovieCard from "./MovieCard";
-import { connect } from "react-redux";
-import axios from "axios";
-import { initListAction } from "../action/actions";
+import MovieCard from './MovieCard';
+import {connect} from 'react-redux'
+import axios from 'axios'
+import {initListAction, movieListLikedAdd,movieListBlockedAdd,movieListUnlike} from '../action/actions'
 import "./MovieList.css";
 
 let page_current = 1;
-const API_KEY = "adbe3118bf475a31215c5e428fb035ce";
-const URL =
-  "https://api.themoviedb.org/3/discover/movie?api_key=" +
-  API_KEY +
-  "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=";
+const API_KEY="adbe3118bf475a31215c5e428fb035ce"
+const URL = 
+"https://api.themoviedb.org/3/discover/movie?api_key=" 
++ 
+API_KEY 
++ "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=";
 
 function MovieList(props) {
-  const [film, setFilm] = useState();
-  let card;
+
+
+const handleLike = (movie) => {
+  let addLiked_movies = [...props.movies_liked]
+  let moviesBlocked = [...props.movies_blocked]
+  if (addLiked_movies.some(temp => temp.id === movie.id)) {
+    alert("already in the liked liked");
+  } else {
+
+  //delete from blockedList if you hit like button for a movie that already in the blocked list
+  if(moviesBlocked.some(tempMovie => tempMovie.id === movie.id))
+  {
+    alert("removed from blocked list and added to liked list")
+    moviesBlocked = moviesBlocked.filter(tempMovie => tempMovie.id !== movie.id)
+    props.addToBlockedList(moviesBlocked)
+  }
+
+  movie.liked = true
+  addLiked_movies.push(movie)
+  let movie_list = [...props.movie_list]
+  if(props.movie_list.some(tempMovie => tempMovie.id === movie.id ))
+  {
+    movie_list.liked= true
+  }
+  props.changeLikeprop(movie_list)
+  props.addToLikedList(addLiked_movies)
+  }
+}
+
+const handleBlock = (movie) => {
+  let addBlocked_movies = [...props.movies_blocked]
+  let addLiked_movies = [...props.movies_liked]
+  if (addBlocked_movies.some(temp => temp.id === movie.id)) {
+    alert("already in the blocked list")
+  }else{
+
+  if(addLiked_movies.some(temp => temp.id === movie.id))
+  {
+    alert("already in the liked list")
+  }else{
+  movie.blocked = true
+  addBlocked_movies.push(movie)
+  props.addToBlockedList(addBlocked_movies)}
+  }
+}
+
+const handleUnlike = (movie) => {
+  let unlike_movies = [...props.movies_liked]
+  movie.liked = false
+  let temp = unlike_movies.filter(tempMovie => tempMovie.id !== movie.id)
+  props.unlike(temp)
+}
+
+const [film, setFilm] = useState();
+let card;
+
   if (!film) {
     card = "loading... ...";
   } else {
-    card = film
-      .filter((mov) => !mov.blocked)
-      .map((movie) => (
-        <MovieCard
-          key={movie.id}
-          poster_path={movie.poster_path}
-          title={movie.title}
-          release_date={movie.release_date}
-          vote_average={movie.vote_average}
-          vote_count={movie.vote_count}
-          overview={movie.overview}
-          liked={movie.liked}
-          blocked={movie.blocked}
-        />
-      ));
+    card = film.filter(mov => !mov.blocked).map((movie) => (
+      <MovieCard
+        key={movie.id}
+        poster_path={movie.poster_path}
+        title={movie.title}
+        release_date={movie.release_date}
+        vote_average={movie.vote_average}
+        vote_count={movie.vote_count}
+        overview={movie.overview}
+        liked={movie.liked}
+        blocked={movie.blocked}
+        movie={movie}
+        handleLike={handleLike}
+        handleBlock={handleBlock}
+        handleUnlike={handleUnlike}
+        
+      />
+   ) );
   }
 
   const sortbyname = () => {
@@ -149,11 +207,29 @@ const mapDispatchToProps = (dispatch) => {
       const action = initListAction(total_movies);
       dispatch(action);
     },
-
     addPageNumber: () => {
-      dispatch({ type: "addPageNumber" });
+      dispatch({type:"addPageNumber"});
     },
-  };
-};
+    addToLikedList:(addLiked_movies)=>{
+      const action = movieListLikedAdd(addLiked_movies);
+      dispatch(action)
+    },
+    addToBlockedList:(addBlocked_movies)=>{
+      const action = movieListBlockedAdd(addBlocked_movies);
+      dispatch(action)
+    },
+    unlike:(temp)=>{
+      const action = movieListUnlike(temp)
+      dispatch(action)
+    },
+    changeLikeprop:(data) => {
+      dispatch({
+        type:"CHANGE_LIKE",data
+      })
+
+    }
+    
+  }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieList);

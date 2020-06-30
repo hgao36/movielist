@@ -20,10 +20,10 @@ const MovieCard = (props) => {
         </span>
         <span className="vote_count">Vote Count:&nbsp;{props.vote_count}</span>
         <br />
-        <button className="like" onClick={props.handleLike}>
+        <button className="like" onClick={()=>(props.handleLike(props.movie))}>
           like
         </button>
-        <button className="block" onClick={props.handleBlock}>
+        <button className="block" onClick={()=>(props.handleBlock(props.movie))}>
           block
         </button>
         <div className="overview">{props.overview}</div>
@@ -44,10 +44,10 @@ const MovieCard = (props) => {
         </span>
         <span className="vote_count">Vote Count:&nbsp;{props.vote_count}</span>
         <br />
-        <button className="delete" onClick={props.handleDelete}>
+        <button className="delete" onClick={()=>(props.handleUnlike(props.movie))}>
           unlike
         </button>
-        <button className="block" onClick={props.handleBlock}>
+        <button className="block" onClick={()=>(props.handleBlock(props.movie))}>
           block
         </button>
         <div className="overview">{props.overview}</div>
@@ -68,10 +68,10 @@ const MovieCard = (props) => {
         </span>
         <span className="vote_count">Vote Count:&nbsp;{props.vote_count}</span>
         <br />
-        <button className="delete" onClick={props.handleDelete}>
-          delete
+        <button className="delete" onClick={()=>(props.handleUnblock(props.movie))}>
+          unblock
         </button>
-        <button className="like" onClick={props.handleLike}>
+        <button className="like" onClick={()=>(props.handleLike(props.movie))}>
           like
         </button>
         <div className="overview">{props.overview}</div>
