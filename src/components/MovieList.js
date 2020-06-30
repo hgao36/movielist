@@ -1,74 +1,80 @@
 import React, { Component, useState, useEffect } from "react";
 import MovieCard from './MovieCard';
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import axios from 'axios'
-import {initListAction, movieListLikedAdd,movieListBlockedAdd,movieListUnlike} from '../action/actions'
+import { initListAction, movieListLikedAdd, movieListBlockedAdd, movieListUnlike } from '../action/actions'
 import "./MovieList.css";
 
 let page_current = 1;
-const API_KEY="adbe3118bf475a31215c5e428fb035ce"
-const URL = 
-"https://api.themoviedb.org/3/discover/movie?api_key=" 
-+ 
-API_KEY 
-+ "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=";
+const API_KEY = "adbe3118bf475a31215c5e428fb035ce"
+const URL =
+  "https://api.themoviedb.org/3/discover/movie?api_key="
+  +
+  API_KEY
+  + "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=";
 
 function MovieList(props) {
 
 
-const handleLike = (movie) => {
-  let addLiked_movies = [...props.movies_liked]
-  let moviesBlocked = [...props.movies_blocked]
-  if (addLiked_movies.some(temp => temp.id === movie.id)) {
-    alert("already in the liked liked");
-  } else {
+  const handleLike = (movie) => {
+    let addLiked_movies = [...props.movies_liked]
+    let moviesBlocked = [...props.movies_blocked]
+    if (addLiked_movies.some(temp => temp.id === movie.id)) {
+      alert("already in the liked liked");
+    } else {
 
-  //delete from blockedList if you hit like button for a movie that already in the blocked list
-  if(moviesBlocked.some(tempMovie => tempMovie.id === movie.id))
-  {
-    alert("removed from blocked list and added to liked list")
-    moviesBlocked = moviesBlocked.filter(tempMovie => tempMovie.id !== movie.id)
-    props.addToBlockedList(moviesBlocked)
+      //delete from blockedList if you hit like button for a movie that already in the blocked list
+      if (moviesBlocked.some(tempMovie => tempMovie.id === movie.id)) {
+        alert("removed from blocked list and added to liked list")
+        moviesBlocked = moviesBlocked.filter(tempMovie => tempMovie.id !== movie.id)
+        props.addToBlockedList(moviesBlocked)
+      }
+
+      movie.liked = true
+      addLiked_movies.push(movie)
+      let movie_list = [...props.movie_list]
+      if (props.movie_list.some(tempMovie => tempMovie.id === movie.id)) {
+        movie_list.liked = true
+      }
+      // for (const i in movie_list) {
+      //   for (let j in i) {
+      //     if (j.id == movie.id) {
+      //       j.liked = true;
+      //       break;
+      //     }
+      //   }
+      // }
+      props.changeLikeprop(movie_list)
+      props.addToLikedList(addLiked_movies)
+    }
   }
 
-  movie.liked = true
-  addLiked_movies.push(movie)
-  let movie_list = [...props.movie_list]
-  if(props.movie_list.some(tempMovie => tempMovie.id === movie.id ))
-  {
-    movie_list.liked= true
+  const handleBlock = (movie) => {
+    let addBlocked_movies = [...props.movies_blocked]
+    let addLiked_movies = [...props.movies_liked]
+    if (addBlocked_movies.some(temp => temp.id === movie.id)) {
+      alert("already in the blocked list")
+    } else {
+
+      if (addLiked_movies.some(temp => temp.id === movie.id)) {
+        alert("already in the liked list")
+      } else {
+        movie.blocked = true
+        addBlocked_movies.push(movie)
+        props.addToBlockedList(addBlocked_movies)
+      }
+    }
   }
-  props.changeLikeprop(movie_list)
-  props.addToLikedList(addLiked_movies)
+
+  const handleUnlike = (movie) => {
+    let unlike_movies = [...props.movies_liked]
+    movie.liked = false
+    let temp = unlike_movies.filter(tempMovie => tempMovie.id !== movie.id)
+    props.unlike(temp)
   }
-}
 
-const handleBlock = (movie) => {
-  let addBlocked_movies = [...props.movies_blocked]
-  let addLiked_movies = [...props.movies_liked]
-  if (addBlocked_movies.some(temp => temp.id === movie.id)) {
-    alert("already in the blocked list")
-  }else{
-
-  if(addLiked_movies.some(temp => temp.id === movie.id))
-  {
-    alert("already in the liked list")
-  }else{
-  movie.blocked = true
-  addBlocked_movies.push(movie)
-  props.addToBlockedList(addBlocked_movies)}
-  }
-}
-
-const handleUnlike = (movie) => {
-  let unlike_movies = [...props.movies_liked]
-  movie.liked = false
-  let temp = unlike_movies.filter(tempMovie => tempMovie.id !== movie.id)
-  props.unlike(temp)
-}
-
-const [film, setFilm] = useState();
-let card;
+  const [film, setFilm] = useState();
+  let card;
 
   if (!film) {
     card = "loading... ...";
@@ -88,9 +94,9 @@ let card;
         handleLike={handleLike}
         handleBlock={handleBlock}
         handleUnlike={handleUnlike}
-        
+
       />
-   ) );
+    ));
   }
 
   const sortbyname = () => {
@@ -124,16 +130,22 @@ let card;
   };
 
   const fetchdata = () => {
-    axios(URL + page_current).then((data) => {
-      let temp = data.data.results;
-      temp = temp.map((mov) => {
-        return { ...mov, liked: false, blocked: false };
+    if (page_current > props.page_number) {
+      axios(URL + page_current).then((data) => {
+        let temp = data.data.results;
+        temp = temp.map((mov) => {
+          return { ...mov, liked: false, blocked: false };
+        });
+        const total_movies = temp;
+        setFilm(total_movies);
+        props.updateStore(total_movies);
+        props.addPageNumber();
       });
-      const total_movies = temp;
-      setFilm(total_movies);
-      props.updateStore(total_movies);
-      props.addPageNumber();
-    });
+    } else {
+      setFilm(props.movie_list[page_current - 1]);
+    }
+
+
   };
 
   useEffect(fetchdata, [1]);
@@ -141,12 +153,9 @@ let card;
   const turnNext = () => {
     if (page_current >= 1) {
       page_current += 1;
-    }
-    if (page_current > props.page_number) {
-      fetchdata();
-    } else {
-      setFilm(props.movie_list[page_current - 1]);
-    }
+    } else { page_current = 1 }
+    fetchdata();
+
   };
 
   const turnPrev = () => {
@@ -155,11 +164,7 @@ let card;
     } else {
       page_current -= 1;
     }
-    if (page_current > props.page_number) {
-      fetchdata();
-    } else {
-      setFilm(props.movie_list[page_current - 1]);
-    }
+    fetchdata();
   };
 
   return (
@@ -208,27 +213,27 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(action);
     },
     addPageNumber: () => {
-      dispatch({type:"addPageNumber"});
+      dispatch({ type: "addPageNumber" });
     },
-    addToLikedList:(addLiked_movies)=>{
+    addToLikedList: (addLiked_movies) => {
       const action = movieListLikedAdd(addLiked_movies);
       dispatch(action)
     },
-    addToBlockedList:(addBlocked_movies)=>{
+    addToBlockedList: (addBlocked_movies) => {
       const action = movieListBlockedAdd(addBlocked_movies);
       dispatch(action)
     },
-    unlike:(temp)=>{
+    unlike: (temp) => {
       const action = movieListUnlike(temp)
       dispatch(action)
     },
-    changeLikeprop:(data) => {
+    changeLikeprop: (data) => {
       dispatch({
-        type:"CHANGE_LIKE",data
+        type: "CHANGE_LIKE", data
       })
 
     }
-    
+
   }
 }
 

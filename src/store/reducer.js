@@ -52,6 +52,7 @@ export default (state = initialState, action) =>{
             }
         case "CHANGE_LIKE":
             const newState6 = {...state, movie_list: action.data}
+            console.log(newState6);
             return newState6
             
         default:
