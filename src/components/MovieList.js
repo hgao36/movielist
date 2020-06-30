@@ -13,7 +13,6 @@ const URL =
 API_KEY 
 + "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=";
 
-
 function MovieList(props) {
 
 
@@ -124,79 +123,89 @@ let card;
     setFilm(temp);
   };
 
-  const fetchdata = () => {axios(URL+page_current).then(data =>{
-    let temp = data.data.results;
-    temp = temp.map(mov => {return {...mov, liked: false, blocked: false}});
-    const total_movies = temp;
-    setFilm(total_movies);
-    props.updateStore(total_movies);
-    props.addPageNumber();
-    })
+  const fetchdata = () => {
+    axios(URL + page_current).then((data) => {
+      let temp = data.data.results;
+      temp = temp.map((mov) => {
+        return { ...mov, liked: false, blocked: false };
+      });
+      const total_movies = temp;
+      setFilm(total_movies);
+      props.updateStore(total_movies);
+      props.addPageNumber();
+    });
   };
 
   useEffect(fetchdata, [1]);
 
   const turnNext = () => {
-    page_current += 1;
+    if (page_current >= 1) {
+      page_current += 1;
+    }
     if (page_current > props.page_number) {
       fetchdata();
     } else {
-      setFilm(props.movie_list[page_current-1]);
+      setFilm(props.movie_list[page_current - 1]);
     }
-  }
+  };
 
   const turnPrev = () => {
-    page_current -= 1;
-    if (page_current == 0) {
+    if (page_current <= 1) {
       page_current = 1;
+    } else {
+      page_current -= 1;
     }
     if (page_current > props.page_number) {
       fetchdata();
     } else {
-      setFilm(props.movie_list[page_current-1]);
+      setFilm(props.movie_list[page_current - 1]);
     }
-  }
+  };
 
   return (
     <div class="main-movieList">
-      <div>
-        <button class="previousPage" onClick={turnPrev}>Previous</button>
-        {/* <form>
-          <label>Page &nbsp;</label>
-          <input
-            type="number"
-            id="quantity"
-            name="quantity"
-            min="1"
-            max="500"
-            disabled
-          ></input>
-        </form> */}
-        <button class="nextPage" onClick={turnNext}>Next</button>
+      <div class="pagination">
+        <button class="previousPage" onClick={turnPrev}>
+          Previous
+        </button>
+        <label>Page &nbsp;</label>
+        <input
+          type="number"
+          id="quantity"
+          name="quantity"
+          min="1"
+          max="500"
+          value={page_current}
+          disabled
+        ></input>
+        <button class="nextPage" onClick={turnNext}>
+          Next
+        </button>
       </div>
-      <button onClick={sortbyname}>SortByname</button>
-      <button onClick={sortbycount}>Sort by vote count</button>
-      <button onClick={sortbyavg}>Sort by vote average</button>
+      <div class="sort-buttons">
+        <button onClick={sortbyname}>SortByname</button>
+        <button onClick={sortbycount}>Sort by vote count</button>
+        <button onClick={sortbyavg}>Sort by vote average</button>
+      </div>
       <div class="grid-container">{card}</div>
     </div>
   );
 }
 
+const mapStateToProps = (state) => {
+  return {
+    movie_list: state.movie_list,
+    movies_liked: state.movies_liked,
+    movies_blocked: state.movies_blocked,
+    page_number: state.page_number,
+  };
+};
 
-const mapStateToProps = (state) =>{
-  return{
-      movie_list: state.movie_list,
-      movies_liked: state.movies_liked,
-      movies_blocked: state.movies_blocked,
-      page_number: state.page_number
-  }
-}
-
-const mapDispatchToProps = (dispatch) =>{
-  return{
+const mapDispatchToProps = (dispatch) => {
+  return {
     updateStore: (total_movies) => {
-    const action = initListAction(total_movies);
-    dispatch(action);
+      const action = initListAction(total_movies);
+      dispatch(action);
     },
     addPageNumber: () => {
       dispatch({type:"addPageNumber"});
@@ -223,6 +232,4 @@ const mapDispatchToProps = (dispatch) =>{
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(MovieList);
-
-
+export default connect(mapStateToProps, mapDispatchToProps)(MovieList);
