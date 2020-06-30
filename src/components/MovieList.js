@@ -2,7 +2,7 @@ import React, { Component, useState, useEffect } from "react";
 import MovieCard from './MovieCard';
 import {connect} from 'react-redux'
 import axios from 'axios'
-import {initListAction} from '../action/actions'
+import {initListAction, movieListLikedAdd,movieListBlockedAdd} from '../action/actions'
 import "./MovieList.css";
 
 let page_current = 1;
@@ -11,13 +11,38 @@ const URL =
 "https://api.themoviedb.org/3/discover/movie?api_key=" 
 + 
 API_KEY 
-+ "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=";  
-
++ "&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=";
 
 
 function MovieList(props) {
-  const [film, setFilm] = useState();
-  let card;
+
+
+const handleLike = (movie) => {
+  let addLiked_movies = [...props.movies_liked]
+  if (addLiked_movies.some(temp => temp.id === movie.id)) {
+    alert("why the fuck you add the same movie to the liked list again?");
+  } else {
+  movie.liked = true
+  addLiked_movies.push(movie)
+  props.addToLikedList(addLiked_movies)
+  }
+}
+
+const handleBlock = (movie) => {
+  let addBlocked_movies = [...props.movies_blocked]
+  if (addBlocked_movies.some(temp => temp.id === movie.id)) {
+    alert("why????????????");
+  }else{
+  movie.blocked = true
+  addBlocked_movies.push(movie)
+  props.addToBlockedList(addBlocked_movies)
+  }
+}
+
+
+const [film, setFilm] = useState();
+let card;
+
   if (!film) {
     card = "loading... ...";
   } else {
@@ -32,8 +57,12 @@ function MovieList(props) {
         overview={movie.overview}
         liked={movie.liked}
         blocked={movie.blocked}
+        movie={movie}
+        handleLike={handleLike}
+        handleBlock={handleBlock}
+        
       />
-    ));
+   ) );
   }
 
   const sortbyname = () => {
@@ -140,10 +169,18 @@ const mapDispatchToProps = (dispatch) =>{
     const action = initListAction(total_movies);
     dispatch(action);
     },
-
     addPageNumber: () => {
       dispatch({type:"addPageNumber"});
-    }
+    },
+    addToLikedList:(addLiked_movies)=>{
+      const action = movieListLikedAdd(addLiked_movies);
+      dispatch(action)
+    },
+    addToBlockedList:(addBlocked_movies)=>{
+      const action = movieListBlockedAdd(addBlocked_movies);
+      dispatch(action)
+    },
+    
   }
 }
 

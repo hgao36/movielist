@@ -3,6 +3,8 @@ GET_MOVIE_LIST_ALL,
 MOVIE_LIST_CHANGE_PAGE,
 MOVIE_LIST_LIKED_ADD,
 MOVIE_LIST_BLOCKED_ADD,
+MOVIE_LIST_UNLIKE,
+MOVIE_LIST_UNBLOCK,
 } from '../action/types'
 
 
@@ -25,23 +27,34 @@ export default (state = initialState, action) =>{
             return newState
             
         case MOVIE_LIST_LIKED_ADD:
-            return{
-                ...state,
-                movies_liked: action.payload
-            };
+            const newState2 = state
+            newState2.movies_liked = action.data;
+            return newState2
             
         case MOVIE_LIST_BLOCKED_ADD:
-            return{
-                ...state,
-                movies_blocked: action.payload
-            };
+            const newState3 = state
+            newState3.movies_blocked = action.data;
+            return newState3
             
-        case MOVIE_LIST_CHANGE_PAGE:
-            return{
-                //test
-                ...state,
-                movie_list:action.payload
-            };
+        case MOVIE_LIST_UNLIKE:
+            const newState4 = state
+            newState4.movies_liked = action.data;
+            // console.log("from reducer")
+            // console.log("action.data")
+            // console.log(action.data)
+            // console.log("movies_liked")
+            // console.log(newState4.movies_liked)
+            return newState4
+
+        case MOVIE_LIST_UNBLOCK:
+            const newState5 = state
+            newState5.movies_blocked = action.data;
+            // console.log("from reducer")
+            // console.log("action.data")
+            // console.log(action.data)
+            // console.log("movies_liked")
+            // console.log(newState4.movies_liked)
+            return newState5
         
         case "addPageNumber":
             return {
