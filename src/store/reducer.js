@@ -50,6 +50,9 @@ export default (state = initialState, action) =>{
                 ...state,
                 page_number: state.page_number + 1
             }
+        case "CHANGE_LIKE":
+            const newState6 = {...state, movie_list: action.data}
+            return newState6
             
         default:
             return state;

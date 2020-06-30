@@ -34,6 +34,12 @@ const handleLike = (movie) => {
 
   movie.liked = true
   addLiked_movies.push(movie)
+  let movie_list = [...props.movie_list]
+  if(props.movie_list.some(tempMovie => tempMovie.id === movie.id ))
+  {
+    movie_list.liked= true
+  }
+  props.changeLikeprop(movie_list)
   props.addToLikedList(addLiked_movies)
   }
 }
@@ -205,11 +211,14 @@ const mapDispatchToProps = (dispatch) =>{
     },
     unlike:(temp)=>{
       const action = movieListUnlike(temp)
-      console.log("dispatch now")
-      console.log(action)
       dispatch(action)
     },
+    changeLikeprop:(data) => {
+      dispatch({
+        type:"CHANGE_LIKE",data
+      })
 
+    }
     
   }
 }
