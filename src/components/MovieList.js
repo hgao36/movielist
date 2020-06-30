@@ -19,9 +19,19 @@ function MovieList(props) {
 
 const handleLike = (movie) => {
   let addLiked_movies = [...props.movies_liked]
+  let moviesBlocked = [...props.movies_blocked]
   if (addLiked_movies.some(temp => temp.id === movie.id)) {
-    alert("why the fuck you add the same movie to the liked list again?");
+    alert("already in the liked liked");
   } else {
+
+  //delete from blockedList if you hit like button for a movie that already in the blocked list
+  if(moviesBlocked.some(tempMovie => tempMovie.id === movie.id))
+  {
+    alert("removed from blocked list and added to liked list")
+    moviesBlocked = moviesBlocked.filter(tempMovie => tempMovie.id !== movie.id)
+    props.addToBlockedList(moviesBlocked)
+  }
+
   movie.liked = true
   addLiked_movies.push(movie)
   props.addToLikedList(addLiked_movies)
@@ -30,12 +40,18 @@ const handleLike = (movie) => {
 
 const handleBlock = (movie) => {
   let addBlocked_movies = [...props.movies_blocked]
+  let addLiked_movies = [...props.movies_liked]
   if (addBlocked_movies.some(temp => temp.id === movie.id)) {
-    alert("why????????????");
+    alert("already in the blocked list")
+  }else{
+
+  if(addLiked_movies.some(temp => temp.id === movie.id))
+  {
+    alert("already in the liked list")
   }else{
   movie.blocked = true
   addBlocked_movies.push(movie)
-  props.addToBlockedList(addBlocked_movies)
+  props.addToBlockedList(addBlocked_movies)}
   }
 }
 
