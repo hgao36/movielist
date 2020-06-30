@@ -19,8 +19,7 @@ const initialState = {
 
 export default (state = initialState, action) =>{
     switch (action.type) {
-        //all the logic will be executed in the Actions.js in /action folder, it will return the right action.movie_list when corresponding 
-        //action type is called.
+        
         case GET_MOVIE_LIST_ALL:
             const newState = state
             newState.movie_list = [...newState.movie_list ,action.data];
@@ -52,7 +51,6 @@ export default (state = initialState, action) =>{
             }
         case "CHANGE_LIKE":
             const newState6 = {...state, movie_list: action.data}
-            console.log(newState6);
             return newState6
             
         default:

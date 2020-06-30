@@ -26,7 +26,6 @@ const BlockedList = (props) => {
   }
 
 
-  console.log(props.movies_blocked);
   return (
     <div class="main-movieList">
       <div>This is the Blocked List.</div>

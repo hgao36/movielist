@@ -26,8 +26,6 @@ const handleBlock = (movie) => {
   props.unlike(temp)
 }
 
-
-   console.log(props.movies_liked);
   return (
     <div class="main-movieList">
       <div>This is the Liked List.</div>
@@ -67,8 +65,6 @@ const mapDispatchToProps = (dispatch) =>{
   return{
     unlike:(temp)=>{
       const action = movieListUnlike(temp)
-      console.log("dispatch now")
-      console.log(action)
       dispatch(action)
     },
     addToBlockedList:(addBlocked_movies)=>{
