@@ -27,33 +27,22 @@ export default (state = initialState, action) =>{
             return newState
             
         case MOVIE_LIST_LIKED_ADD:
-            const newState2 = state
-            newState2.movies_liked = action.data;
+            const newState2 = {...state, movies_liked: action.data}
             return newState2
+
             
         case MOVIE_LIST_BLOCKED_ADD:
-            const newState3 = state
-            newState3.movies_blocked = action.data;
+            const newState3 = {...state, movies_blocked: action.data}
             return newState3
+
             
         case MOVIE_LIST_UNLIKE:
-            const newState4 = state
-            newState4.movies_liked = action.data;
-            // console.log("from reducer")
-            // console.log("action.data")
-            // console.log(action.data)
-            // console.log("movies_liked")
-            // console.log(newState4.movies_liked)
+            const newState4 = {...state, movies_liked: action.data}
             return newState4
 
+
         case MOVIE_LIST_UNBLOCK:
-            const newState5 = state
-            newState5.movies_blocked = action.data;
-            // console.log("from reducer")
-            // console.log("action.data")
-            // console.log(action.data)
-            // console.log("movies_liked")
-            // console.log(newState4.movies_liked)
+            const newState5 = {...state, movies_blocked: action.data}
             return newState5
         
         case "addPageNumber":

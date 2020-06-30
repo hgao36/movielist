@@ -2,7 +2,7 @@ import React, { Component, useState, useEffect } from "react";
 import MovieCard from './MovieCard';
 import {connect} from 'react-redux'
 import axios from 'axios'
-import {initListAction, movieListLikedAdd,movieListBlockedAdd} from '../action/actions'
+import {initListAction, movieListLikedAdd,movieListBlockedAdd,movieListUnlike} from '../action/actions'
 import "./MovieList.css";
 
 let page_current = 1;
@@ -39,6 +39,12 @@ const handleBlock = (movie) => {
   }
 }
 
+const handleUnlike = (movie) => {
+  let unlike_movies = [...props.movies_liked]
+  movie.liked = false
+  let temp = unlike_movies.filter(tempMovie => tempMovie.id !== movie.id)
+  props.unlike(temp)
+}
 
 const [film, setFilm] = useState();
 let card;
@@ -60,6 +66,7 @@ let card;
         movie={movie}
         handleLike={handleLike}
         handleBlock={handleBlock}
+        handleUnlike={handleUnlike}
         
       />
    ) );
@@ -180,6 +187,13 @@ const mapDispatchToProps = (dispatch) =>{
       const action = movieListBlockedAdd(addBlocked_movies);
       dispatch(action)
     },
+    unlike:(temp)=>{
+      const action = movieListUnlike(temp)
+      console.log("dispatch now")
+      console.log(action)
+      dispatch(action)
+    },
+
     
   }
 }
